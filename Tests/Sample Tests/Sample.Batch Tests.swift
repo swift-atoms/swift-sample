@@ -1,4 +1,4 @@
-import Sample_Primitives
+import Sample
 import Testing
 
 @Suite

@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "swift-sample-primitives",
+    name: "swift-sample",
     platforms: [
         .macOS(.v27),
         .iOS(.v27),
@@ -19,47 +19,47 @@ let package = Package(
         ),
 
         .library(
-            name: "Sample Averaging Primitives",
-            targets: ["Sample Averaging Primitives"]
+            name: "Sample Averaging",
+            targets: ["Sample Averaging"]
         ),
         .library(
-            name: "Sample Accumulator Primitives",
-            targets: ["Sample Accumulator Primitives"]
+            name: "Sample Accumulator",
+            targets: ["Sample Accumulator"]
         ),
         .library(
-            name: "Sample Batch Primitives",
-            targets: ["Sample Batch Primitives"]
-        ),
-
-        .library(
-            name: "Sample Primitives",
-            targets: ["Sample Primitives"]
+            name: "Sample Batch",
+            targets: ["Sample Batch"]
         ),
 
         .library(
-            name: "Sample Primitives Test Support",
-            targets: ["Sample Primitives Test Support"]
+            name: "Sample",
+            targets: ["Sample"]
+        ),
+
+        .library(
+            name: "Sample Test Support",
+            targets: ["Sample Test Support"]
         ),
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-primitives/swift-comparison-primitives.git",
+            url: "https://github.com/swift-molecules/swift-comparison.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-order-primitives.git",
+            url: "https://github.com/swift-molecules/swift-order.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-algebra-primitives.git",
+            url: "https://github.com/swift-molecules/swift-algebra.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-witness-primitives.git",
+            url: "https://github.com/swift-molecules/swift-witness.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-time-primitives.git",
+            url: "https://github.com/swift-molecules/swift-time.git",
             branch: "main"
         ),
     ],
@@ -71,52 +71,52 @@ let package = Package(
         ),
 
         .target(
-            name: "Sample Averaging Primitives",
+            name: "Sample Averaging",
             dependencies: [
                 "Sample Primitive",
-                .product(name: "Time Primitive", package: "swift-time-primitives"),
-                .product(name: "Witness Primitives", package: "swift-witness-primitives"),
+                .product(name: "Time Primitive", package: "swift-time"),
+                .product(name: "Witness", package: "swift-witness"),
             ]
         ),
         .target(
-            name: "Sample Accumulator Primitives",
+            name: "Sample Accumulator",
             dependencies: [
                 "Sample Primitive",
-                .product(name: "Algebra Monoid Primitives", package: "swift-algebra-primitives"),
+                .product(name: "Algebra Monoid", package: "swift-algebra"),
             ]
         ),
         .target(
-            name: "Sample Batch Primitives",
+            name: "Sample Batch",
             dependencies: [
                 "Sample Primitive",
-                "Sample Averaging Primitives",
-                .product(name: "Comparison Primitives", package: "swift-comparison-primitives"),
-                .product(name: "Order Primitives", package: "swift-order-primitives"),
-            ]
-        ),
-
-        .target(
-            name: "Sample Primitives",
-            dependencies: [
-                "Sample Primitive",
-                "Sample Averaging Primitives",
-                "Sample Accumulator Primitives",
-                "Sample Batch Primitives",
+                "Sample Averaging",
+                .product(name: "Comparison", package: "swift-comparison"),
+                .product(name: "Order", package: "swift-order"),
             ]
         ),
 
         .target(
-            name: "Sample Primitives Test Support",
+            name: "Sample",
             dependencies: [
-                "Sample Primitives"
+                "Sample Primitive",
+                "Sample Averaging",
+                "Sample Accumulator",
+                "Sample Batch",
+            ]
+        ),
+
+        .target(
+            name: "Sample Test Support",
+            dependencies: [
+                "Sample"
             ],
             path: "Tests/Support"
         ),
         .testTarget(
-            name: "Sample Primitives Tests",
+            name: "Sample Tests",
             dependencies: [
-                "Sample Primitives",
-                "Sample Primitives Test Support",
+                "Sample",
+                "Sample Test Support",
             ]
         ),
     ],

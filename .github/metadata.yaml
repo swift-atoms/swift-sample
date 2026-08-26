@@ -1,7 +1,6 @@
 # .github/metadata.yaml
 description: "Sample-statistics value types: sorted batches, streaming accumulators, averaging witnesses, regression, and baseline/current comparison."
 topics:
-  - primitives
   - sample
 homepage: "https://swift-institute.org"
 readme:

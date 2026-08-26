@@ -1,4 +1,4 @@
-@_exported public import Algebra_Monoid_Primitives
+@_exported public import Algebra_Monoid
 public import Sample_Primitive
 
 extension Sample.Accumulator {

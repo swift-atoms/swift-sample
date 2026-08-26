@@ -1,4 +1,4 @@
-public import Sample_Averaging_Primitives
+public import Sample_Averaging
 public import Sample_Primitive
 
 extension Sample {
