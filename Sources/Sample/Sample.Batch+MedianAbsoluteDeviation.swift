@@ -62,3 +62,16 @@ extension Sample.Batch where Element == Double {
         outlierCount(using: .real, threshold: k)
     }
 }
+
+extension Sample.Batch where Element == Duration {
+
+    @inlinable
+    public var medianAbsoluteDeviation: Duration? {
+        medianAbsoluteDeviation(using: .duration)
+    }
+
+    @inlinable
+    public func outlierCount(threshold: Double = 3.0) -> Int? {
+        outlierCount(using: .duration, threshold: threshold)
+    }
+}

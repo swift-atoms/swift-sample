@@ -21,3 +21,11 @@ extension Sample.Batch where Element == Double {
         coefficientOfVariation(using: .real)
     }
 }
+
+extension Sample.Batch where Element == Duration {
+
+    @inlinable
+    public var coefficientOfVariation: Double? {
+        coefficientOfVariation(using: .duration)
+    }
+}

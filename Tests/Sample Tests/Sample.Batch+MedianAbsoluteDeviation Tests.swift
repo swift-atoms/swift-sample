@@ -6,7 +6,7 @@ struct `Sample Batch Median Absolute Deviation Tests` {
 
     @Test
     func `empty batch`() {
-        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
+        let batch = Sample.Batch<Double>([])
         #expect(batch.medianAbsoluteDeviation == nil)
     }
 
@@ -46,7 +46,7 @@ struct `Sample Batch Median Absolute Deviation Tests` {
 
     @Test
     func `outlier count empty`() {
-        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
+        let batch = Sample.Batch<Double>([])
         #expect(batch.outlierCount() == nil)
     }
 

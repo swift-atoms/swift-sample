@@ -18,7 +18,7 @@ struct `Sample Averaging Tests` {
 
     @Test
     func `mean empty batch`() {
-        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
+        let batch = Sample.Batch<Double>([])
         #expect(batch.mean == nil)
     }
 
@@ -53,7 +53,7 @@ struct `Sample Averaging Tests` {
 
     @Test
     func `standard deviation empty`() {
-        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
+        let batch = Sample.Batch<Double>([])
         #expect(batch.standardDeviation == nil)
     }
 
@@ -69,7 +69,7 @@ struct `Sample Averaging Tests` {
 
     @Test
     func `averaging UInt64`() {
-        let batch = Sample.Batch<UInt64>([10, 20, 30], sortedBy: .ascending)
+        let batch = Sample.Batch<UInt64>([10, 20, 30])
         let result = batch.mean(using: .natural)
         #expect(result == 20)
     }

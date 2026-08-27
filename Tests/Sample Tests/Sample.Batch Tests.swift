@@ -6,7 +6,7 @@ struct `Sample Batch Tests` {
 
     @Test
     func `empty batch`() {
-        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
+        let batch = Sample.Batch<Double>([])
         #expect(batch.count == 0)
         #expect(batch.isEmpty)
         #expect(batch.min == nil)
@@ -58,7 +58,7 @@ struct `Sample Batch Tests` {
 
     @Test
     func `borrowing accessors`() {
-        let batch = Sample.Batch(count: 3, sortedBy: .ascending) { i in
+        let batch = Sample.Batch(count: 3, sortedBy: <) { i in
             [30, 10, 20][i]
         }
         let minVal = batch.withMin { $0 }
@@ -73,7 +73,7 @@ struct `Sample Batch Tests` {
 
     @Test
     func `custom comparator`() {
-        let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0, 5.0], sortedBy: .descending)
+        let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0, 5.0], sortedBy: >)
 
         #expect(batch.min == 5.0)
         #expect(batch.max == 1.0)

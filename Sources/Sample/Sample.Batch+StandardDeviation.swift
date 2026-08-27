@@ -25,3 +25,11 @@ extension Sample.Batch where Element == Double {
         standardDeviation(using: .real)
     }
 }
+
+extension Sample.Batch where Element == Duration {
+
+    @inlinable
+    public var standardDeviation: Duration? {
+        standardDeviation(using: .duration)
+    }
+}

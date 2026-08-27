@@ -35,3 +35,12 @@ extension Sample.Batch where Element == Int {
     @inlinable
     public var sum: Int? { sum(using: .integer) }
 }
+
+extension Sample.Batch where Element == Duration {
+
+    @inlinable
+    public var mean: Duration? { mean(using: .duration) }
+
+    @inlinable
+    public var sum: Duration? { sum(using: .duration) }
+}
