@@ -1,6 +1,3 @@
-public import Sample_Averaging
-public import Sample_Primitive
-
 extension Sample {
 
     public enum Metric: Swift.String, Sendable, Hashable {
@@ -16,10 +13,6 @@ extension Sample {
         case p999
     }
 }
-
-#if !hasFeature(Embedded)
-    extension Sample.Metric: Codable {}
-#endif
 
 extension Sample.Metric {
 

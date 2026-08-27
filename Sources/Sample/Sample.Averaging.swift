@@ -1,5 +1,3 @@
-public import Sample_Primitive
-@_exported public import Time_Primitive
 @_exported public import Witness
 
 extension Sample {
@@ -36,19 +34,6 @@ extension Sample {
 
 extension Sample.Averaging: Sendable where Element: Sendable {}
 
-extension Sample.Averaging where Element == Duration {
-
-    @inlinable
-    public static var duration: Self {
-        .init(
-            zero: .zero,
-            adding: { $0 + $1 },
-            dividing: { $0 / $1 },
-            project: { $0.inSeconds },
-            embed: { .seconds($0) }
-        )
-    }
-}
 
 extension Sample.Averaging where Element == Double {
 

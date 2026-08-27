@@ -1,6 +1,3 @@
-public import Sample_Averaging
-public import Sample_Primitive
-
 extension Sample.Batch where Element: Copyable & Sendable {
 
     @inlinable
@@ -16,13 +13,6 @@ extension Sample.Batch where Element: Copyable & Sendable {
     }
 }
 
-extension Sample.Batch where Element == Duration {
-
-    @inlinable
-    public var coefficientOfVariation: Double? {
-        coefficientOfVariation(using: .duration)
-    }
-}
 
 extension Sample.Batch where Element == Double {
 

@@ -1,6 +1,3 @@
-public import Sample_Averaging
-public import Sample_Primitive
-
 extension Sample {
 
     public struct Comparison<Element: Comparable & Sendable>: Sendable {
@@ -73,28 +70,6 @@ extension Sample {
     }
 }
 
-extension Sample.Comparison where Element == Duration {
-
-    @inlinable
-    public var change: Double? {
-        change(using: .duration)
-    }
-
-    @inlinable
-    public var isRegression: Bool {
-        isRegression(using: .duration)
-    }
-
-    @inlinable
-    public var isImprovement: Bool {
-        isImprovement(using: .duration)
-    }
-
-    @inlinable
-    public func exceedsTolerance(_ tolerance: Double) -> Bool {
-        exceedsTolerance(tolerance, using: .duration)
-    }
-}
 
 extension Sample.Comparison where Element == Double {
 
