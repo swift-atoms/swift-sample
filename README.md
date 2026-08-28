@@ -2,17 +2,18 @@
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
-Sample-statistics value types for Swift: sorted batches, streaming accumulators,
-averaging witnesses, linear regression, and baseline/current comparison.
+Sample-statistics value types for Swift — a `Sample` namespace of sorted batches, streaming accumulators, averaging witnesses, linear regression, and baseline/current comparison, with zero platform dependencies.
+
+---
 
 ## Quick Start
 
-`Sample.Batch` sorts its elements at construction, making percentile, minimum,
-maximum, and median reads constant-time operations.
+`Sample.Batch` sorts its elements at construction and stores them in sorted order, so percentiles, min, max, and median are O(1) reads. Summary statistics — mean, standard deviation, coefficient of variation, median absolute deviation — are computed over the same sorted buffer.
 
 ```swift
 import Sample
 
+// A batch of measured latencies; sorted once at construction.
 let latencies = Sample.Batch([
     Duration.milliseconds(12),
     Duration.milliseconds(9),
@@ -20,29 +21,47 @@ let latencies = Sample.Batch([
     Duration.milliseconds(11),
 ])
 
-latencies.median
-latencies.p99
-latencies.mean
-latencies.standardDeviation
-latencies.coefficientOfVariation
+latencies.median                 // 12ms  (nearest-rank)
+latencies.p99                    // 31ms
+latencies.mean                   // 15.75ms
+latencies.standardDeviation      // sample stddev (Bessel's n-1)
+latencies.coefficientOfVariation // relative spread, as a percentage
 ```
 
-Use a native Swift comparison closure when a custom ordering is needed:
+A `Sample.Comparison` pairs a `baseline` with a `current` batch and reports the relative change on a chosen `Sample.Metric`, classifying it as a regression or improvement according to `Sample.Polarity`:
 
 ```swift
-let descending = Sample.Batch([1, 3, 2], sortedBy: >)
+import Sample
+
+let baseline = Sample.Batch([
+    Duration.milliseconds(10), Duration.milliseconds(11), Duration.milliseconds(12),
+])
+let current = Sample.Batch([
+    Duration.milliseconds(9), Duration.milliseconds(10), Duration.milliseconds(11),
+])
+
+let comparison = Sample.Comparison(
+    baseline: baseline,
+    current: current,
+    metric: .p99,
+    polarity: .lowerIsBetter
+)
+
+comparison.change(using: .duration)        // negative → current is faster
+comparison.isRegression(using: .duration)  // false — p99 improved
 ```
 
-Batch statistics generalize over the element type through a
-`Sample.Averaging` witness. Witnesses are provided for `Duration`, `Double`,
-`Int`, and `UInt64`. `Sample.Accumulator` is a streaming tally whose
-`Sample.Accumulator.monoid` witness combines independent partial results.
+Batch statistics generalize over the element type through a `Sample.Averaging` witness — value-level operations for zero, addition, division, and projection to/from `Double`. Witnesses ship for `Duration` (`.duration`), `Double` (`.real`), `Int` (`.integer`), and `UInt64` (`.natural`), so the same `mean`/`standardDeviation`/`coefficientOfVariation` work across all of them.
+
+For incremental measurement, `Sample.Accumulator` is a streaming O(1) tally of count, sum, min, and max that forms a commutative monoid under `merged(with:)` — partial results from independent runs combine without loss. `Sample.Regression.linear(x:y:)` fits an ordinary least-squares line and returns a `Sample.Regression.Fit` with slope, intercept, R², and mean squared error.
+
+---
 
 ## Installation
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-atoms/swift-sample.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-sample.git", branch: "main")
 ]
 ```
 
@@ -55,19 +74,37 @@ dependencies: [
 )
 ```
 
-The package uses Swift tools 6.4 and declares Apple platform version 27.
+Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 (or the matching Linux / Windows toolchain).
 
-## Products
+---
 
-| Product | Purpose |
-|---------|---------|
-| `Sample` | Foundation-free sample types, statistics, and witnesses. |
-| `Sample Standard Library Integration` | Standard-library conformances such as `Codable`, gated out of Embedded builds. |
-| `Sample Apple Foundation Integration` | Apple Foundation integration and the package's only Foundation dependency. |
+## Architecture
 
-The core product depends only on the canonical
-[`swift-witness`](https://github.com/swift-atoms/swift-witness) atom. It keeps
-Foundation isolated to the Apple Foundation integration target.
+Five library products. The umbrella `Sample` re-exports the four building blocks; import a single sub-namespace when you need just one.
+
+| Product | Target | Purpose |
+|---------|--------|---------|
+| `Sample Primitive` | `Sources/Sample Primitive/` | The core `Sample` namespace: `Sample.Accumulator` (streaming tally), `Sample.Polarity`, and `Sample.Regression` + `Sample.Regression.Fit` (ordinary least-squares). |
+| `Sample Averaging` | `Sources/Sample Averaging/` | `Sample.Averaging<Element>` — the value witness generalizing batch statistics over `Duration`, `Double`, `Int`, and `UInt64`. |
+| `Sample Accumulator` | `Sources/Sample Accumulator/` | The commutative-monoid witness `Sample.Accumulator.monoid` for combining accumulators. |
+| `Sample Batch` | `Sources/Sample Batch/` | `Sample.Batch` (sorted, `~Copyable`-aware), its percentile/mean/stddev/CV/MAD statistics, `Sample.Metric`, and `Sample.Comparison`. |
+| `Sample` | `Sources/Sample/` | Umbrella re-exporting all of the above. |
+| `Sample Test Support` | `Tests/Support/` | Re-exports the umbrella for test consumers. |
+
+Foundation-free.
+
+---
+
+## Platform Support
+
+| Platform | Status |
+|----------|--------|
+| macOS 26 | Full support |
+| Linux | Full support |
+| Windows | Full support |
+| iOS / tvOS / watchOS / visionOS | Supported |
+
+---
 
 ## Community
 

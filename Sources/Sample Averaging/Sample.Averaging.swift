@@ -1,4 +1,6 @@
-public import Witness
+public import Sample_Primitive
+@_exported public import Time_Primitive
+@_exported public import Witness
 
 extension Sample {
 
@@ -42,21 +44,8 @@ extension Sample.Averaging where Element == Duration {
             zero: .zero,
             adding: { $0 + $1 },
             dividing: { $0 / $1 },
-            project: {
-                let components = $0.components
-                return Double(components.seconds)
-                    + Double(components.attoseconds) / 1_000_000_000_000_000_000
-            },
-            embed: {
-                let seconds = Int64($0)
-                let attoseconds = Int64(
-                    ($0 - Double(seconds)) * 1_000_000_000_000_000_000
-                )
-                return Duration(
-                    secondsComponent: seconds,
-                    attosecondsComponent: attoseconds
-                )
-            }
+            project: { $0.inSeconds },
+            embed: { .seconds($0) }
         )
     }
 }

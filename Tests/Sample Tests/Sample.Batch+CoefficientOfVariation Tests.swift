@@ -6,7 +6,7 @@ struct `Sample Batch Coefficient Of Variation Tests` {
 
     @Test
     func `empty batch`() {
-        let batch = Sample.Batch<Double>([])
+        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
         #expect(batch.coefficientOfVariation == nil)
     }
 

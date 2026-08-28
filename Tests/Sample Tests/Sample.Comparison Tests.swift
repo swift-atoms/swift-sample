@@ -77,8 +77,8 @@ struct `Sample Comparison Tests` {
 
     @Test
     func `empty batch comparison`() {
-        let baseline = Sample.Batch<Double>([])
-        let current = Sample.Batch<Double>([])
+        let baseline = Sample.Batch<Double>([], sortedBy: .ascending)
+        let current = Sample.Batch<Double>([], sortedBy: .ascending)
         let comparison = Sample.Comparison(
             baseline: baseline,
             current: current,

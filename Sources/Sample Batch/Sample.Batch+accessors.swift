@@ -1,3 +1,5 @@
+public import Sample_Primitive
+
 extension Sample.Batch where Element: Copyable {
 
     @inlinable

@@ -1,3 +1,5 @@
+public import Sample_Primitive
+
 extension Sample {
 
     public struct Batch<Element: ~Copyable>: ~Copyable {
