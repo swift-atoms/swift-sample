@@ -1,5 +1,5 @@
 public import Sample_Averaging
-public import Sample_Primitive
+public import Sample
 
 extension Sample {
 

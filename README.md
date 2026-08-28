@@ -1,4 +1,4 @@
-# Sample
+# Sample Primitives
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -61,7 +61,7 @@ For incremental measurement, `Sample.Accumulator` is a streaming O(1) tally of c
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-molecules/swift-sample.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-sample.git", branch: "main")
 ]
 ```
 
@@ -80,15 +80,15 @@ Requires Swift 6.3.1 and macOS 26 / iOS 26 / tvOS 26 / watchOS 26 / visionOS 26 
 
 ## Architecture
 
-Five library products. The umbrella `Sample` re-exports the four building blocks; import a single sub-namespace when you need just one.
+Five library products. The umbrella `Sample Primitives` re-exports the four building blocks; import a single sub-namespace when you need just one.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Sample Primitive` | `Sources/Sample Primitive/` | The core `Sample` namespace: `Sample.Accumulator` (streaming tally), `Sample.Polarity`, and `Sample.Regression` + `Sample.Regression.Fit` (ordinary least-squares). |
-| `Sample Averaging` | `Sources/Sample Averaging/` | `Sample.Averaging<Element>` — the value witness generalizing batch statistics over `Duration`, `Double`, `Int`, and `UInt64`. |
-| `Sample Accumulator` | `Sources/Sample Accumulator/` | The commutative-monoid witness `Sample.Accumulator.monoid` for combining accumulators. |
-| `Sample Batch` | `Sources/Sample Batch/` | `Sample.Batch` (sorted, `~Copyable`-aware), its percentile/mean/stddev/CV/MAD statistics, `Sample.Metric`, and `Sample.Comparison`. |
-| `Sample` | `Sources/Sample/` | Umbrella re-exporting all of the above. |
+| `Sample Primitive` | `Sources/Sample Primitive/` | The `Sample` namespace: `Sample.Accumulator` (streaming tally), `Sample.Polarity`, and `Sample.Regression` + `Sample.Regression.Fit` (ordinary least-squares). |
+| `Sample Averaging Primitives` | `Sources/Sample Averaging Primitives/` | `Sample.Averaging<Element>` — the value witness generalizing batch statistics over `Duration`, `Double`, `Int`, and `UInt64`. |
+| `Sample Accumulator Primitives` | `Sources/Sample Accumulator Primitives/` | The commutative-monoid witness `Sample.Accumulator.monoid` for combining accumulators. |
+| `Sample Batch Primitives` | `Sources/Sample Batch Primitives/` | `Sample.Batch` (sorted, `~Copyable`-aware), its percentile/mean/stddev/CV/MAD statistics, `Sample.Metric`, and `Sample.Comparison`. |
+| `Sample Primitives` | `Sources/Sample Primitives/` | Umbrella re-exporting all of the above. |
 | `Sample Test Support` | `Tests/Support/` | Re-exports the umbrella for test consumers. |
 
 Foundation-free.

@@ -1,6 +1,6 @@
 @_exported public import Comparison
 @_exported public import Order
-public import Sample_Primitive
+public import Sample
 
 extension Sample.Batch where Element: Copyable {
 

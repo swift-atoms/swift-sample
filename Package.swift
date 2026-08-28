@@ -14,11 +14,6 @@ let package = Package(
     products: [
 
         .library(
-            name: "Sample Primitive",
-            targets: ["Sample Primitive"]
-        ),
-
-        .library(
             name: "Sample Averaging",
             targets: ["Sample Averaging"]
         ),
@@ -43,80 +38,70 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://github.com/swift-molecules/swift-comparison.git",
+            url: "https://github.com/swift-atoms/swift-comparison.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-order.git",
+            url: "https://github.com/swift-atoms/swift-order.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-algebra.git",
+            url: "https://github.com/swift-atoms/swift-algebra.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-witness.git",
+            url: "https://github.com/swift-atoms/swift-witness.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-molecules/swift-time.git",
+            url: "https://github.com/swift-atoms/swift-time.git",
             branch: "main"
         ),
     ],
     targets: [
 
         .target(
-            name: "Sample Primitive",
+            name: "Sample",
             dependencies: []
         ),
 
         .target(
             name: "Sample Averaging",
             dependencies: [
-                "Sample Primitive",
-                .product(name: "Time Primitive", package: "swift-time"),
+                .target(name: "Sample"),
+                .product(name: "Time", package: "swift-time"),
                 .product(name: "Witness", package: "swift-witness"),
             ]
         ),
         .target(
             name: "Sample Accumulator",
             dependencies: [
-                "Sample Primitive",
+                .target(name: "Sample"),
                 .product(name: "Algebra Monoid", package: "swift-algebra"),
             ]
         ),
         .target(
             name: "Sample Batch",
             dependencies: [
-                "Sample Primitive",
-                "Sample Averaging",
+                .target(name: "Sample"),
+                .target(name: "Sample Averaging"),
                 .product(name: "Comparison", package: "swift-comparison"),
                 .product(name: "Order", package: "swift-order"),
             ]
         ),
 
         .target(
-            name: "Sample",
-            dependencies: [
-                "Sample Primitive",
-                "Sample Averaging",
-                "Sample Accumulator",
-                "Sample Batch",
-            ]
-        ),
-
-        .target(
             name: "Sample Test Support",
             dependencies: [
-                "Sample"
+                .target(name: "Sample")
             ],
             path: "Tests/Support"
         ),
         .testTarget(
             name: "Sample Tests",
             dependencies: [
-                "Sample",
-                "Sample Test Support",
+                .target(name: "Sample"),
+                .target(name: "Sample Test Support"),
             ]
         ),
     ],
