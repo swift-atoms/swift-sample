@@ -1,6 +1,6 @@
-public import Sample_Primitive
-@_exported public import Time_Primitive
-@_exported public import Witness_Primitives
+public import Sample
+@_exported public import Time
+@_exported public import Witness
 
 extension Sample {
 

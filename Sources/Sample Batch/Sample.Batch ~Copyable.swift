@@ -1,5 +1,5 @@
-@_exported public import Order_Primitives
-public import Sample_Primitive
+@_exported public import Order
+public import Sample
 
 extension Sample.Batch where Element: ~Copyable {
 

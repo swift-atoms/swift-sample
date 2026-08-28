@@ -11,7 +11,7 @@ Sample-statistics value types for Swift — a `Sample` namespace of sorted batch
 `Sample.Batch` sorts its elements at construction and stores them in sorted order, so percentiles, min, max, and median are O(1) reads. Summary statistics — mean, standard deviation, coefficient of variation, median absolute deviation — are computed over the same sorted buffer.
 
 ```swift
-import Sample_Primitives
+import Sample
 
 // A batch of measured latencies; sorted once at construction.
 let latencies = Sample.Batch([
@@ -31,7 +31,7 @@ latencies.coefficientOfVariation // relative spread, as a percentage
 A `Sample.Comparison` pairs a `baseline` with a `current` batch and reports the relative change on a chosen `Sample.Metric`, classifying it as a regression or improvement according to `Sample.Polarity`:
 
 ```swift
-import Sample_Primitives
+import Sample
 
 let baseline = Sample.Batch([
     Duration.milliseconds(10), Duration.milliseconds(11), Duration.milliseconds(12),
@@ -61,7 +61,7 @@ For incremental measurement, `Sample.Accumulator` is a streaming O(1) tally of c
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-sample-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-atoms/swift-sample.git", branch: "main")
 ]
 ```
 
@@ -69,7 +69,7 @@ dependencies: [
 .target(
     name: "App",
     dependencies: [
-        .product(name: "Sample Primitives", package: "swift-sample-primitives"),
+        .product(name: "Sample", package: "swift-sample"),
     ]
 )
 ```
@@ -84,12 +84,12 @@ Five library products. The umbrella `Sample Primitives` re-exports the four buil
 
 | Product | Target | Purpose |
 |---------|--------|---------|
-| `Sample Primitive` | `Sources/Sample Primitive/` | The core `Sample` namespace: `Sample.Accumulator` (streaming tally), `Sample.Polarity`, and `Sample.Regression` + `Sample.Regression.Fit` (ordinary least-squares). |
+| `Sample Primitive` | `Sources/Sample Primitive/` | The `Sample` namespace: `Sample.Accumulator` (streaming tally), `Sample.Polarity`, and `Sample.Regression` + `Sample.Regression.Fit` (ordinary least-squares). |
 | `Sample Averaging Primitives` | `Sources/Sample Averaging Primitives/` | `Sample.Averaging<Element>` — the value witness generalizing batch statistics over `Duration`, `Double`, `Int`, and `UInt64`. |
 | `Sample Accumulator Primitives` | `Sources/Sample Accumulator Primitives/` | The commutative-monoid witness `Sample.Accumulator.monoid` for combining accumulators. |
 | `Sample Batch Primitives` | `Sources/Sample Batch Primitives/` | `Sample.Batch` (sorted, `~Copyable`-aware), its percentile/mean/stddev/CV/MAD statistics, `Sample.Metric`, and `Sample.Comparison`. |
 | `Sample Primitives` | `Sources/Sample Primitives/` | Umbrella re-exporting all of the above. |
-| `Sample Primitives Test Support` | `Tests/Support/` | Re-exports the umbrella for test consumers. |
+| `Sample Test Support` | `Tests/Support/` | Re-exports the umbrella for test consumers. |
 
 Foundation-free.
 
