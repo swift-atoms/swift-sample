@@ -1,4 +1,5 @@
 import Sample
+import Sample_Batch
 import Testing
 
 @Suite

@@ -85,8 +85,8 @@ let package = Package(
             dependencies: [
                 .target(name: "Sample"),
                 .target(name: "Sample Averaging"),
-                .product(name: "Comparison", package: "swift-comparison"),
-                .product(name: "Order", package: "swift-order"),
+                .product(name: "Comparison Protocol", package: "swift-comparison"),
+                .product(name: "Order Comparator", package: "swift-order"),
             ]
         ),
 
@@ -101,6 +101,9 @@ let package = Package(
             name: "Sample Tests",
             dependencies: [
                 .target(name: "Sample"),
+                .target(name: "Sample Accumulator"),
+                .target(name: "Sample Averaging"),
+                .target(name: "Sample Batch"),
                 .target(name: "Sample Test Support"),
             ]
         ),
