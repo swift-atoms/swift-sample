@@ -1,5 +1,5 @@
-@_exported public import Comparison
-@_exported public import Order
+@_exported public import Comparison_Protocol
+@_exported public import Order_Comparator
 public import Sample
 
 extension Sample.Batch where Element: Copyable {
@@ -16,7 +16,8 @@ extension Sample.Batch where Element: Copyable {
     }
 }
 
-extension Sample.Batch where Element: Comparison.`Protocol` & SendableMetatype & Copyable {
+extension Sample.Batch
+where Element: Comparison::Comparison.`Protocol` & SendableMetatype & Copyable {
 
     @inlinable
     public init(_ values: [Element]) {

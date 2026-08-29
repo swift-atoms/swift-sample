@@ -1,4 +1,6 @@
 import Sample
+import Sample_Averaging
+import Sample_Batch
 import Testing
 
 @Suite
