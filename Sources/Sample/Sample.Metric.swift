@@ -1,4 +1,3 @@
-
 extension Sample {
 
     public enum Metric: Swift.String, Sendable, Hashable {
@@ -16,8 +15,9 @@ extension Sample {
 }
 
 #if !hasFeature(Embedded)
-    extension Sample.Metric: Codable {}
+extension Sample.Metric: Swift.Codable {}
 #endif
+
 
 extension Sample.Metric {
 

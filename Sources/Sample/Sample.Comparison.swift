@@ -1,4 +1,3 @@
-
 extension Sample {
 
     public struct Comparison<Element: Comparable & Sendable>: Sendable {

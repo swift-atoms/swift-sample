@@ -13,8 +13,8 @@ let package = Package(
     ],
     products: [
         .library(name: "Sample", targets: ["Sample"]),
-        .library(name: "Sample Standard Library Integration", targets: ["Sample Standard Library Integration"]),
-        .library(name: "Sample Foundation Library Integration", targets: ["Sample Foundation Library Integration"]),
+
+        .library(name: "Sample Foundation Integration", targets: ["Sample Foundation Integration"]),
         .library(name: "Sample Test Support", targets: ["Sample Test Support"]),
     ],
     dependencies: [
@@ -51,20 +51,13 @@ let package = Package(
             ],
             path: "Sources/Sample"
         ),
+        
         .target(
-            name: "Sample Standard Library Integration",
+            name: "Sample Foundation Integration",
             dependencies: [
                 .target(name: "Sample"),
             ],
-            path: "Sources/Sample Standard Library Integration"
-        ),
-        .target(
-            name: "Sample Foundation Library Integration",
-            dependencies: [
-                .target(name: "Sample"),
-                .target(name: "Sample Standard Library Integration"),
-            ],
-            path: "Sources/Sample Foundation Library Integration"
+            path: "Sources/Sample Foundation Integration"
         ),
         .target(
             name: "Sample Test Support",
@@ -78,8 +71,7 @@ let package = Package(
             dependencies: [
                 .target(name: "Sample"),
                 .target(name: "Sample Test Support"),
-                .target(name: "Sample Standard Library Integration"),
-                .target(name: "Sample Foundation Library Integration"),
+                .target(name: "Sample Foundation Integration"),
             ],
             path: "Tests/Sample Tests"
         ),

@@ -1,4 +1,3 @@
-
 extension Sample.Batch where Element: Copyable {
 
     @inlinable

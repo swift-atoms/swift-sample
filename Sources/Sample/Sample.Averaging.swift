@@ -33,7 +33,7 @@ extension Sample {
     }
 }
 
-extension Sample.Averaging: Sendable where Element: Sendable {}
+extension Sample.Averaging: Swift.Sendable where Element: Swift.Sendable {}
 
 extension Sample.Averaging where Element == Duration {
 

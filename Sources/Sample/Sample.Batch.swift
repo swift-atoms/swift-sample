@@ -1,4 +1,3 @@
-
 extension Sample {
 
     public struct Batch<Element: ~Copyable>: ~Copyable {
@@ -14,5 +13,4 @@ extension Sample {
     }
 }
 
-extension Sample.Batch: Copyable where Element: Copyable {}
-extension Sample.Batch: @unsafe @unchecked Sendable where Element: Sendable {}
+extension Sample.Batch: Swift.Copyable where Element: Swift.Copyable {}
