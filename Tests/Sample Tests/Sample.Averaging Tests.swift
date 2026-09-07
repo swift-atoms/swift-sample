@@ -76,3 +76,11 @@ struct `Sample Averaging Tests` {
         #expect(result == 20)
     }
 }
+
+extension `Sample Averaging Tests` {
+    @Test(arguments: [-1.25, -0.25, 0.0, 0.25, 1.25])
+    func `duration projection preserves fractional seconds`(_ seconds: Double) {
+        let averaging = Sample.Averaging<Duration>.duration
+        #expect(averaging.project(.seconds(seconds)) == seconds)
+    }
+}

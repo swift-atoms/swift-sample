@@ -44,7 +44,7 @@ extension Sample.Averaging where Element == Duration {
             zero: .zero,
             adding: { $0 + $1 },
             dividing: { $0 / $1 },
-            project: { $0.inSeconds },
+            project: { Double($0.components.seconds) + Double($0.components.attoseconds) / 1e18 },
             embed: { .seconds($0) }
         )
     }
