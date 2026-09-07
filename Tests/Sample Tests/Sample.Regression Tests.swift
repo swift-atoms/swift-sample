@@ -2,16 +2,16 @@ import Sample
 import Testing
 
 @Suite
-struct `Sample Regression Tests` {
+struct `Sample regression fits linear relationships and reports degeneracy` {
 
-    @Suite struct Unit {}
-    @Suite struct `Edge Case` {}
+    @Suite struct `Linear regression recovers slopes intercepts and fit quality` {}
+    @Suite struct `Linear regression handles sparse degenerate and large observations` {}
 }
 
-extension `Sample Regression Tests`.Unit {
+extension `Sample regression fits linear relationships and reports degeneracy`.`Linear regression recovers slopes intercepts and fit quality` {
 
     @Test
-    func `perfect linear fit`() {
+    func `Linear regression recovers an exact slope intercept and perfect fit`() {
 
         let x = [1.0, 2.0, 3.0, 4.0, 5.0]
         let y = [3.0, 5.0, 7.0, 9.0, 11.0]
@@ -24,7 +24,7 @@ extension `Sample Regression Tests`.Unit {
     }
 
     @Test
-    func `perfect fit through origin`() {
+    func `Linear regression recovers an exact line through the origin`() {
 
         let x = [1.0, 2.0, 3.0, 4.0]
         let y = [3.0, 6.0, 9.0, 12.0]
@@ -36,7 +36,7 @@ extension `Sample Regression Tests`.Unit {
     }
 
     @Test
-    func `negative slope`() {
+    func `Linear regression recovers a negative slope and its intercept`() {
 
         let x = [1.0, 2.0, 3.0, 4.0, 5.0]
         let y = [8.0, 6.0, 4.0, 2.0, 0.0]
@@ -59,7 +59,7 @@ extension `Sample Regression Tests`.Unit {
     }
 
     @Test
-    func `zero slope for constant y`() {
+    func `Constant observations produce a zero regression slope`() {
         let x = [1.0, 2.0, 3.0, 4.0, 5.0]
         let y = [7.0, 7.0, 7.0, 7.0, 7.0]
         let fit = Sample.Regression.linear(x: x, y: y)
@@ -69,10 +69,10 @@ extension `Sample Regression Tests`.Unit {
     }
 }
 
-extension `Sample Regression Tests`.`Edge Case` {
+extension `Sample regression fits linear relationships and reports degeneracy`.`Linear regression handles sparse degenerate and large observations` {
 
     @Test
-    func `minimum two points`() {
+    func `Two distinct points determine an exact linear fit`() {
         let x = [1.0, 2.0]
         let y = [3.0, 5.0]
         let fit = Sample.Regression.linear(x: x, y: y)

@@ -2,10 +2,10 @@ import Sample
 import Testing
 
 @Suite
-struct `Sample Accumulator Tests` {
+struct `Sample accumulators combine observations under monoid laws` {
 
     @Test
-    func `empty accumulator`() {
+    func `Empty sample accumulators have zero count and sum with no mean`() {
         let acc = Sample.Accumulator.empty
         #expect(acc.count == 0)
         #expect(acc.sum == 0)
@@ -15,7 +15,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `record values`() {
+    func `Recording samples updates the count sum extrema and mean`() {
         var acc = Sample.Accumulator.empty
         acc.record(10)
         acc.record(20)
@@ -28,7 +28,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `single record`() {
+    func `A single recorded sample defines all accumulator statistics`() {
         var acc = Sample.Accumulator.empty
         acc.record(42)
         #expect(acc.count == 1)
@@ -39,7 +39,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `monoid identity left`() {
+    func `An empty left accumulator preserves the merged statistics`() {
         var acc = Sample.Accumulator.empty
         acc.record(10)
         acc.record(20)
@@ -51,7 +51,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `monoid identity right`() {
+    func `An empty right accumulator preserves the merged statistics`() {
         var acc = Sample.Accumulator.empty
         acc.record(10)
         acc.record(20)
@@ -63,7 +63,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `monoid associativity`() {
+    func `Sample accumulator merging is associative`() {
         var a = Sample.Accumulator.empty
         a.record(1)
         a.record(2)
@@ -86,7 +86,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `monoid commutativity`() {
+    func `Sample accumulator merging is commutative`() {
         var a = Sample.Accumulator.empty
         a.record(10)
         a.record(50)
@@ -105,7 +105,7 @@ struct `Sample Accumulator Tests` {
     }
 
     @Test
-    func `monoid witness`() {
+    func `The accumulator monoid witness preserves its identity law`() {
         let monoid = Sample.Accumulator.monoid
 
         var a = Sample.Accumulator.empty

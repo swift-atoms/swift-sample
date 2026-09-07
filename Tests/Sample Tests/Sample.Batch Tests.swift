@@ -2,10 +2,10 @@ import Sample
 import Testing
 
 @Suite
-struct `Sample Batch Tests` {
+struct `Sample batches expose ordered statistics and borrowed observations` {
 
     @Test
-    func `empty batch`() {
+    func `Empty sample batches have no ordered statistics`() {
         let batch = Sample.Batch<Double>([], sortedBy: .ascending)
         #expect(batch.count == 0)
         #expect(batch.isEmpty)
@@ -16,7 +16,7 @@ struct `Sample Batch Tests` {
     }
 
     @Test
-    func `single element`() {
+    func `A single sample defines the minimum maximum and median`() {
         let batch = Sample.Batch([42.0])
         #expect(batch.count == 1)
         #expect(!batch.isEmpty)
@@ -26,14 +26,14 @@ struct `Sample Batch Tests` {
     }
 
     @Test
-    func `sorted order`() {
+    func `Sample batches expose extrema in sorted order`() {
         let batch = Sample.Batch([5, 3, 1, 4, 2])
         #expect(batch.min == 1)
         #expect(batch.max == 5)
     }
 
     @Test
-    func percentile() {
+    func `Named sample percentiles select the expected ordered observations`() {
         let batch = Sample.Batch([10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0])
         #expect(batch.p50 == 60.0)
         #expect(batch.p90 == 100.0)
@@ -43,7 +43,7 @@ struct `Sample Batch Tests` {
     }
 
     @Test
-    func `percentile nearest rank`() {
+    func `Sample percentile lookup clamps endpoints and selects indexed observations`() {
 
         let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0])
 
@@ -57,7 +57,7 @@ struct `Sample Batch Tests` {
     }
 
     @Test
-    func `borrowing accessors`() {
+    func `Borrowed sample accessors expose the minimum maximum and median`() {
         let batch = Sample.Batch(count: 3, sortedBy: .ascending) { i in
             [30, 10, 20][i]
         }
@@ -72,7 +72,7 @@ struct `Sample Batch Tests` {
     }
 
     @Test
-    func `custom comparator`() {
+    func `Sample batch statistics follow the supplied comparator`() {
         let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0, 5.0], sortedBy: .descending)
 
         #expect(batch.min == 5.0)
@@ -82,7 +82,7 @@ struct `Sample Batch Tests` {
     }
 
     @Test
-    func `copyable sharing`() {
+    func `Copied sample batches preserve their count and extrema`() {
         let batch1 = Sample.Batch([1.0, 2.0, 3.0])
         let batch2 = batch1
         #expect(batch1.count == batch2.count)

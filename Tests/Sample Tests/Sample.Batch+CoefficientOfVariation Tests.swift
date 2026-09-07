@@ -2,28 +2,28 @@ import Sample
 import Testing
 
 @Suite
-struct `Sample Batch Coefficient Of Variation Tests` {
+struct `Sample variation coefficients express relative dispersion` {
 
     @Test
-    func `empty batch`() {
+    func `Empty sample batches have no coefficient of variation`() {
         let batch = Sample.Batch<Double>([], sortedBy: .ascending)
         #expect(batch.coefficientOfVariation == nil)
     }
 
     @Test
-    func `single element`() {
+    func `A single sample has no coefficient of variation`() {
         let batch = Sample.Batch([42.0])
         #expect(batch.coefficientOfVariation == nil)
     }
 
     @Test
-    func `uniform values`() {
+    func `Uniform samples have zero coefficient of variation`() {
         let batch = Sample.Batch([5.0, 5.0, 5.0, 5.0, 5.0])
         #expect(batch.coefficientOfVariation == 0.0)
     }
 
     @Test
-    func `known distribution`() {
+    func `Sample variation coefficients match the expected relative dispersion`() {
 
         let batch = Sample.Batch([10.0, 20.0, 30.0, 40.0, 50.0])
         let cv = batch.coefficientOfVariation!
@@ -31,7 +31,7 @@ struct `Sample Batch Coefficient Of Variation Tests` {
     }
 
     @Test
-    func `low variance`() {
+    func `Closely grouped samples have a small coefficient of variation`() {
 
         let batch = Sample.Batch([100.0, 101.0, 99.0, 100.5, 99.5])
         let cv = batch.coefficientOfVariation!
@@ -39,13 +39,13 @@ struct `Sample Batch Coefficient Of Variation Tests` {
     }
 
     @Test
-    func `duration convenience`() {
+    func `Equal duration samples have zero coefficient of variation`() {
         let batch = Sample.Batch<Duration>([.seconds(1), .seconds(1), .seconds(1)])
         #expect(batch.coefficientOfVariation == 0.0)
     }
 
     @Test
-    func `duration with variance`() {
+    func `Varying duration samples have a positive coefficient of variation`() {
         let batch = Sample.Batch<Duration>([
             .seconds(10), .seconds(20), .seconds(30), .seconds(40), .seconds(50),
         ])
@@ -54,13 +54,13 @@ struct `Sample Batch Coefficient Of Variation Tests` {
     }
 
     @Test
-    func `zero mean`() {
+    func `Samples with a zero mean have no coefficient of variation`() {
         let batch = Sample.Batch([-1.0, 0.0, 1.0])
         #expect(batch.coefficientOfVariation == nil)
     }
 
     @Test
-    func `generic witness`() {
+    func `Integer averaging witnesses support coefficients of variation`() {
         let batch = Sample.Batch([100, 200, 300, 400, 500])
         let cv = batch.coefficientOfVariation(using: .integer)
         #expect(cv != nil)

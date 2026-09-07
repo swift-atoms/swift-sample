@@ -2,10 +2,10 @@ import Sample
 import Testing
 
 @Suite
-struct `Sample Comparison Tests` {
+struct `Sample comparisons classify metric changes using the requested polarity` {
 
     @Test
-    func `regression detection lower is better`() {
+    func `Increasing sample means indicate regression when lower values are preferred`() {
         let baseline = Sample.Batch([10.0, 20.0, 30.0])
         let current = Sample.Batch([15.0, 25.0, 35.0])
         let comparison = Sample.Comparison(
@@ -19,7 +19,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `improvement detection lower is better`() {
+    func `Decreasing sample means indicate improvement when lower values are preferred`() {
         let baseline = Sample.Batch([10.0, 20.0, 30.0])
         let current = Sample.Batch([5.0, 15.0, 25.0])
         let comparison = Sample.Comparison(
@@ -33,7 +33,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `regression detection higher is better`() {
+    func `Decreasing sample means indicate regression when higher values are preferred`() {
         let baseline = Sample.Batch([100.0, 200.0, 300.0])
         let current = Sample.Batch([50.0, 150.0, 250.0])
         let comparison = Sample.Comparison(
@@ -47,7 +47,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `change percentage`() {
+    func `Sample comparisons report relative metric change`() {
         let baseline = Sample.Batch([100.0])
         let current = Sample.Batch([110.0])
         let comparison = Sample.Comparison(
@@ -62,7 +62,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `exceeds tolerance`() {
+    func `Sample comparisons test relative change against the requested tolerance`() {
         let baseline = Sample.Batch([100.0])
         let current = Sample.Batch([115.0])
         let comparison = Sample.Comparison(
@@ -76,7 +76,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `empty batch comparison`() {
+    func `Empty sample comparisons report neither change nor improvement or regression`() {
         let baseline = Sample.Batch<Double>([], sortedBy: .ascending)
         let current = Sample.Batch<Double>([], sortedBy: .ascending)
         let comparison = Sample.Comparison(
@@ -91,7 +91,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `metric extraction`() {
+    func `Sample metric extraction returns the requested minimum maximum or mean`() {
         let batch = Sample.Batch([10.0, 20.0, 30.0, 40.0, 50.0])
         let minVal = Sample.Metric.min.extract(from: batch, using: .real)
         #expect(minVal == 10.0)
@@ -102,7 +102,7 @@ struct `Sample Comparison Tests` {
     }
 
     @Test
-    func `polarity cases`() {
+    func `Sample polarity distinguishes preferences for lower and higher values`() {
         let lower: Sample.Polarity = .lowerIsBetter
         let higher: Sample.Polarity = .higherIsBetter
         #expect(lower != higher)

@@ -2,15 +2,15 @@ import Sample
 import Testing
 
 @Suite
-struct `Sample Trend Mann Kendall Tests` {
-    @Suite struct Unit {}
-    @Suite struct `Edge Case` {}
-    @Suite struct Integration {}
+struct `Mann Kendall trends quantify ordered evidence with tie correction` {
+    @Suite struct `Mann Kendall evidence distinguishes increasing decreasing and flat observations` {}
+    @Suite struct `Mann Kendall evidence handles nonfinite and short observation sequences` {}
+    @Suite struct `Mann Kendall projections support generic ordered samples` {}
 }
 
-extension `Sample Trend Mann Kendall Tests`.Unit {
+extension `Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall evidence distinguishes increasing decreasing and flat observations` {
     @Test
-    func `strictly increasing observations`() {
+    func `Increasing observations produce positive Mann Kendall evidence`() {
         let trend = Sample.Trend.mannKendall([1.0, 2.0, 3.0, 4.0, 5.0], value: { $0 })
 
         #expect(trend.statistic == 10)
@@ -22,7 +22,7 @@ extension `Sample Trend Mann Kendall Tests`.Unit {
     }
 
     @Test
-    func `strictly decreasing observations`() {
+    func `Decreasing observations produce negative Mann Kendall evidence`() {
         let trend = Sample.Trend.mannKendall([5.0, 4.0, 3.0, 2.0, 1.0], value: { $0 })
 
         #expect(trend.statistic == -10)
@@ -50,7 +50,7 @@ extension `Sample Trend Mann Kendall Tests`.Unit {
     }
 }
 
-extension `Sample Trend Mann Kendall Tests`.`Edge Case` {
+extension `Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall evidence handles nonfinite and short observation sequences` {
     @Test
     func `non-finite observations are explicitly excluded`() {
         let trend = Sample.Trend.mannKendall(
@@ -75,7 +75,7 @@ extension `Sample Trend Mann Kendall Tests`.`Edge Case` {
     }
 }
 
-extension `Sample Trend Mann Kendall Tests`.Integration {
+extension `Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall projections support generic ordered samples` {
     @Test
     func `projection supports generic ordered samples`() {
         struct Observation {
