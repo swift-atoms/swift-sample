@@ -1,4 +1,3 @@
-public import Sample
 
 extension Sample.Batch where Element: Copyable {
 

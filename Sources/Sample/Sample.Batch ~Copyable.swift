@@ -1,5 +1,4 @@
-@_exported public import Order_Comparator
-public import Sample
+@_exported public import Order
 
 extension Sample.Batch where Element: ~Copyable {
 

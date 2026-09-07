@@ -12,29 +12,10 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-
-        .library(
-            name: "Sample Averaging",
-            targets: ["Sample Averaging"]
-        ),
-        .library(
-            name: "Sample Accumulator",
-            targets: ["Sample Accumulator"]
-        ),
-        .library(
-            name: "Sample Batch",
-            targets: ["Sample Batch"]
-        ),
-
-        .library(
-            name: "Sample",
-            targets: ["Sample"]
-        ),
-
-        .library(
-            name: "Sample Test Support",
-            targets: ["Sample Test Support"]
-        ),
+        .library(name: "Sample", targets: ["Sample"]),
+        .library(name: "Sample Standard Library Integration", targets: ["Sample Standard Library Integration"]),
+        .library(name: "Sample Foundation Library Integration", targets: ["Sample Foundation Library Integration"]),
+        .library(name: "Sample Test Support", targets: ["Sample Test Support"]),
     ],
     dependencies: [
         .package(
@@ -59,41 +40,36 @@ let package = Package(
         ),
     ],
     targets: [
-
         .target(
             name: "Sample",
-            dependencies: []
-        ),
-
-        .target(
-            name: "Sample Averaging",
             dependencies: [
-                .target(name: "Sample"),
                 .product(name: "Time", package: "swift-time"),
                 .product(name: "Witness", package: "swift-witness"),
-            ]
+                .product(name: "Algebra", package: "swift-algebra"),
+                .product(name: "Comparison", package: "swift-comparison"),
+                .product(name: "Order", package: "swift-order"),
+            ],
+            path: "Sources/Sample"
         ),
         .target(
-            name: "Sample Accumulator",
+            name: "Sample Standard Library Integration",
             dependencies: [
                 .target(name: "Sample"),
-                .product(name: "Algebra Monoid", package: "swift-algebra"),
-            ]
+            ],
+            path: "Sources/Sample Standard Library Integration"
         ),
         .target(
-            name: "Sample Batch",
+            name: "Sample Foundation Library Integration",
             dependencies: [
                 .target(name: "Sample"),
-                .target(name: "Sample Averaging"),
-                .product(name: "Comparison Protocol", package: "swift-comparison"),
-                .product(name: "Order Comparator", package: "swift-order"),
-            ]
+                .target(name: "Sample Standard Library Integration"),
+            ],
+            path: "Sources/Sample Foundation Library Integration"
         ),
-
         .target(
             name: "Sample Test Support",
             dependencies: [
-                .target(name: "Sample")
+                .target(name: "Sample"),
             ],
             path: "Tests/Support"
         ),
@@ -101,18 +77,18 @@ let package = Package(
             name: "Sample Tests",
             dependencies: [
                 .target(name: "Sample"),
-                .target(name: "Sample Accumulator"),
-                .target(name: "Sample Averaging"),
-                .target(name: "Sample Batch"),
                 .target(name: "Sample Test Support"),
-            ]
+                .target(name: "Sample Standard Library Integration"),
+                .target(name: "Sample Foundation Library Integration"),
+            ],
+            path: "Tests/Sample Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+for target in package.targets {
+    target.swiftSettings = [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
@@ -121,8 +97,4 @@ for target in package.targets where ![.system, .binary, .plugin, .macro].contain
         .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
     ]
-
-    let package: [SwiftSetting] = []
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

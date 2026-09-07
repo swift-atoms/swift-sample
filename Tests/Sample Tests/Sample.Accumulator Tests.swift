@@ -1,5 +1,4 @@
 import Sample
-import Sample_Accumulator
 import Testing
 
 @Suite

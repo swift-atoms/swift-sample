@@ -1,5 +1,3 @@
-public import Sample_Averaging
-public import Sample
 
 extension Sample {
 

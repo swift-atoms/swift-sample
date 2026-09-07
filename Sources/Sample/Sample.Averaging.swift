@@ -1,4 +1,3 @@
-public import Sample
 @_exported public import Time
 @_exported public import Witness
 

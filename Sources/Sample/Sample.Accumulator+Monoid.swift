@@ -1,5 +1,4 @@
-@_exported public import Algebra_Monoid
-public import Sample
+@_exported public import Algebra
 
 extension Sample.Accumulator {
 
