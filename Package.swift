@@ -18,6 +18,7 @@ let package = Package(
         .library(name: "Sample Test Support", targets: ["Sample Test Support"]),
     ],
     dependencies: [
+
         .package(
             url: "https://github.com/swift-atoms/swift-comparison.git",
             branch: "main"
@@ -74,6 +75,21 @@ let package = Package(
                 .target(name: "Sample Foundation Integration"),
             ],
             path: "Tests/Sample Tests"
+        ),
+        .testTarget(
+            name: "Consolidated Sample Comparison Tests",
+            dependencies: [
+
+                .target(name: "Sample"),
+                .product(name: "Comparison", package: "swift-comparison"),
+                .product(name: "Order", package: "swift-order"),
+            ],
+            path: "Tests/Consolidated swift-sample-comparison"
+        ),
+        .testTarget(
+            name: "Consolidated Sample Order Tests",
+            dependencies: [.target(name: "Sample"), .product(name: "Order", package: "swift-order"), .product(name: "Comparison", package: "swift-comparison")],
+            path: "Tests/Consolidated swift-sample-order"
         ),
     ],
     swiftLanguageModes: [.v6]
