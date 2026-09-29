@@ -1,9 +1,5 @@
 import Order
-import Comparison
 import Sample
-import Sample
-import Order
-import Comparison
 import Testing
 
 @Suite

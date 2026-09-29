@@ -1,4 +1,3 @@
-@_exported public import Comparison
 @_exported public import Order
 
 extension Sample.Batch where Element: Copyable {
@@ -16,7 +15,7 @@ extension Sample.Batch where Element: Copyable {
 }
 
 extension Sample.Batch
-where Element: Comparison::Comparison.`Protocol` & SendableMetatype & Copyable {
+where Element: Swift.Comparable & SendableMetatype & Copyable {
 
     @inlinable
     public init(_ values: [Element]) {

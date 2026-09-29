@@ -18,11 +18,6 @@ let package = Package(
         .library(name: "Sample Test Support", targets: ["Sample Test Support"]),
     ],
     dependencies: [
-
-        .package(
-            url: "https://github.com/swift-atoms/swift-comparison.git",
-            branch: "main"
-        ),
         .package(
             url: "https://github.com/swift-atoms/swift-order.git",
             branch: "main"
@@ -47,7 +42,7 @@ let package = Package(
                 .product(name: "Time", package: "swift-time"),
                 .product(name: "Witness", package: "swift-witness"),
                 .product(name: "Algebra", package: "swift-algebra"),
-                .product(name: "Comparison", package: "swift-comparison"),
+                .product(name: "Order", package: "swift-order"),
                 .product(name: "Order", package: "swift-order"),
             ],
             path: "Sources/Sample"
@@ -70,6 +65,8 @@ let package = Package(
         .testTarget(
             name: "Sample Tests",
             dependencies: [
+                .product(name: "Algebra", package: "swift-algebra"),
+                .product(name: "Time", package: "swift-time"),
                 .target(name: "Sample"),
                 .target(name: "Sample Test Support"),
                 .target(name: "Sample Foundation Integration"),
@@ -81,14 +78,14 @@ let package = Package(
             dependencies: [
 
                 .target(name: "Sample"),
-                .product(name: "Comparison", package: "swift-comparison"),
+                .product(name: "Order", package: "swift-order"),
                 .product(name: "Order", package: "swift-order"),
             ],
             path: "Tests/Consolidated swift-sample-comparison"
         ),
         .testTarget(
             name: "Consolidated Sample Order Tests",
-            dependencies: [.target(name: "Sample"), .product(name: "Order", package: "swift-order"), .product(name: "Comparison", package: "swift-comparison")],
+            dependencies: [.target(name: "Sample"), .product(name: "Order", package: "swift-order"), .product(name: "Order", package: "swift-order")],
             path: "Tests/Consolidated swift-sample-order"
         ),
     ],
