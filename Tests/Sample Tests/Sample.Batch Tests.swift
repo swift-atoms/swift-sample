@@ -159,6 +159,18 @@ struct `Sample batches expose ordered statistics and borrowed observations` {
     }
 
     @Test
+    func `Every valid percentile selects the truncated index of a small batch`() {
+        for count in 1...9 {
+            let batch = Sample.Batch(count: count, sortedBy: .ascending) { i in i }
+            let percentiles = (0...64).map { Double($0) / 64 } + [Double.leastNonzeroMagnitude, 1.0.nextDown]
+            for p in percentiles {
+                let expected = Swift.min(Int(Double(count) * p), count - 1)
+                #expect(batch.percentile(p) == expected)
+            }
+        }
+    }
+
+    @Test
     func `Copied sample batches preserve their count and extrema`() {
         let batch1 = Sample.Batch([1.0, 2.0, 3.0])
         let batch2 = batch1
