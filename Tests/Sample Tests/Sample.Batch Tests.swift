@@ -82,6 +82,83 @@ struct `Sample batches expose ordered statistics and borrowed observations` {
     }
 
     @Test
+    func `Percentiles below zero have no observation`() {
+        let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0])
+        #expect(batch.percentile(-1.0) == nil)
+        #expect(batch.percentile(-0.5) == nil)
+        #expect(batch.percentile(-Double.ulpOfOne) == nil)
+        #expect(batch.percentile(-Double.leastNonzeroMagnitude) == nil)
+        #expect(batch.percentile(-Double.greatestFiniteMagnitude) == nil)
+    }
+
+    @Test
+    func `Percentiles above one have no observation`() {
+        let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0])
+        #expect(batch.percentile(1.0.nextUp) == nil)
+        #expect(batch.percentile(1.5) == nil)
+        #expect(batch.percentile(2.0) == nil)
+        #expect(batch.percentile(Double.greatestFiniteMagnitude) == nil)
+    }
+
+    @Test
+    func `Non-finite percentiles have no observation`() {
+        let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0])
+        #expect(batch.percentile(.nan) == nil)
+        #expect(batch.percentile(.signalingNaN) == nil)
+        #expect(batch.percentile(.infinity) == nil)
+        #expect(batch.percentile(-.infinity) == nil)
+    }
+
+    @Test
+    func `Empty batches have no percentile for any input`() {
+        let batch = Sample.Batch<Double>([], sortedBy: .ascending)
+        #expect(batch.percentile(0.0) == nil)
+        #expect(batch.percentile(0.5) == nil)
+        #expect(batch.percentile(1.0) == nil)
+        #expect(batch.percentile(-1.0) == nil)
+        #expect(batch.percentile(.nan) == nil)
+        #expect(batch.percentile(.infinity) == nil)
+    }
+
+    @Test
+    func `Percentile endpoints select the minimum and the maximum`() {
+        let single = Sample.Batch([42.0])
+        #expect(single.percentile(0.0) == 42.0)
+        #expect(single.percentile(-0.0) == 42.0)
+        #expect(single.percentile(1.0) == 42.0)
+
+        let batch = Sample.Batch([5.0, 3.0, 1.0, 4.0, 2.0])
+        #expect(batch.percentile(0.0) == batch.min)
+        #expect(batch.percentile(-0.0) == batch.min)
+        #expect(batch.percentile(1.0) == batch.max)
+
+        let descending = Sample.Batch([1.0, 2.0, 3.0], sortedBy: .descending)
+        #expect(descending.percentile(0.0) == 3.0)
+        #expect(descending.percentile(1.0) == 1.0)
+    }
+
+    @Test
+    func `Interior percentiles keep their truncating selection`() {
+        let batch = Sample.Batch([1.0, 2.0, 3.0, 4.0])
+        #expect(batch.percentile(Double.leastNonzeroMagnitude) == 1.0)
+        #expect(batch.percentile(0.25) == 2.0)
+        #expect(batch.percentile(0.49) == 2.0)
+        #expect(batch.percentile(0.5) == 3.0)
+        #expect(batch.percentile(0.74) == 3.0)
+        #expect(batch.percentile(0.75) == 4.0)
+        #expect(batch.percentile(1.0.nextDown) == 4.0)
+    }
+
+    @Test
+    func `Percentiles just below one select the maximum of a large batch`() {
+        let batch = Sample.Batch(count: 1000, sortedBy: .ascending) { i in Double(i) }
+        #expect(batch.percentile(0.999) == 999.0)
+        #expect(batch.percentile(1.0.nextDown) == 999.0)
+        #expect(batch.percentile(1.0) == 999.0)
+        #expect(batch.percentile(0.5) == 500.0)
+    }
+
+    @Test
     func `Copied sample batches preserve their count and extrema`() {
         let batch1 = Sample.Batch([1.0, 2.0, 3.0])
         let batch2 = batch1

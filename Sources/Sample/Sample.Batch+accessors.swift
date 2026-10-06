@@ -2,7 +2,7 @@ extension Sample.Batch where Element: Copyable {
 
     @inlinable
     public func percentile(_ p: Double) -> Element? {
-        guard count > 0 else { return nil }
+        guard count > 0, (0.0...1.0).contains(p) else { return nil }
         let index = Int(Double(count) * p)
 
         let clamped = Swift.min(index, count - 1)
