@@ -32,8 +32,8 @@ extension Sample.Accumulator {
     public mutating func record(_ value: UInt64) {
         count &+= 1
         sum &+= value
-        minimum = Swift.min(minimum, value)
-        maximum = Swift.max(maximum, value)
+        minimum = Swift::min(minimum, value)
+        maximum = Swift::max(maximum, value)
     }
 
     @inlinable
@@ -41,8 +41,8 @@ extension Sample.Accumulator {
         .init(
             count: count &+ other.count,
             sum: sum &+ other.sum,
-            minimum: Swift.min(minimum, other.minimum),
-            maximum: Swift.max(maximum, other.maximum)
+            minimum: Swift::min(minimum, other.minimum),
+            maximum: Swift::max(maximum, other.maximum)
         )
     }
 

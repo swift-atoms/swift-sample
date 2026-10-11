@@ -1,6 +1,6 @@
 extension Sample {
 
-    public enum Metric: Swift.String, Sendable, Hashable {
+    public enum Metric: Swift::String, Sendable, Hashable {
         case min
         case max
         case median
@@ -15,7 +15,7 @@ extension Sample {
 }
 
 #if !hasFeature(Embedded)
-    extension Sample.Metric: Swift.Codable {}
+    extension Sample.Metric: Swift::Codable {}
 #endif
 
 extension Sample.Metric {

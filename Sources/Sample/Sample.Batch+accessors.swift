@@ -4,7 +4,7 @@ extension Sample.Batch where Element: Copyable {
     public func percentile(_ p: Double) -> Element? {
         guard count > 0, (0.0...1.0).contains(p) else { return nil }
         let scaled = Double(count) * p
-        let index = scaled >= Double(count) ? count - 1 : Swift.min(Int(scaled), count - 1)
+        let index = scaled >= Double(count) ? count - 1 : Swift::min(Int(scaled), count - 1)
         return unsafe self._storage.base[index]
     }
 

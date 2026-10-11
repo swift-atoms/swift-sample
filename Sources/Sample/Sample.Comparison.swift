@@ -22,51 +22,53 @@ extension Sample {
             self.metric = metric
             self.polarity = polarity
         }
+    }
+}
 
-        @inlinable
-        public func change(
-            using averaging: Sample.Averaging<Element>
-        ) -> Double? {
-            guard let baseValue = metric.extract(from: baseline, using: averaging),
-                let curValue = metric.extract(from: current, using: averaging)
-            else {
-                return nil
-            }
-            let baseDouble = averaging.project(baseValue)
-            guard baseDouble != 0 else { return nil }
-            return (averaging.project(curValue) - baseDouble) / baseDouble
+extension Sample.Comparison {
+    @inlinable
+    public func change(
+        using averaging: Sample.Averaging<Element>
+    ) -> Double? {
+        guard let baseValue = metric.extract(from: baseline, using: averaging),
+            let curValue = metric.extract(from: current, using: averaging)
+        else {
+            return nil
         }
+        let baseDouble = averaging.project(baseValue)
+        guard baseDouble != 0 else { return nil }
+        return (averaging.project(curValue) - baseDouble) / baseDouble
+    }
 
-        @inlinable
-        public func isRegression(
-            using averaging: Sample.Averaging<Element>
-        ) -> Bool {
-            guard let delta = change(using: averaging) else { return false }
-            switch polarity {
-            case .lowerIsBetter: return delta > 0
-            case .higherIsBetter: return delta < 0
-            }
+    @inlinable
+    public func isRegression(
+        using averaging: Sample.Averaging<Element>
+    ) -> Bool {
+        guard let delta = change(using: averaging) else { return false }
+        switch polarity {
+        case .lowerIsBetter: return delta > 0
+        case .higherIsBetter: return delta < 0
         }
+    }
 
-        @inlinable
-        public func isImprovement(
-            using averaging: Sample.Averaging<Element>
-        ) -> Bool {
-            guard let delta = change(using: averaging) else { return false }
-            switch polarity {
-            case .lowerIsBetter: return delta < 0
-            case .higherIsBetter: return delta > 0
-            }
+    @inlinable
+    public func isImprovement(
+        using averaging: Sample.Averaging<Element>
+    ) -> Bool {
+        guard let delta = change(using: averaging) else { return false }
+        switch polarity {
+        case .lowerIsBetter: return delta < 0
+        case .higherIsBetter: return delta > 0
         }
+    }
 
-        @inlinable
-        public func exceedsTolerance(
-            _ tolerance: Double,
-            using averaging: Sample.Averaging<Element>
-        ) -> Bool {
-            guard let delta = change(using: averaging) else { return false }
-            return Swift.abs(delta) > tolerance
-        }
+    @inlinable
+    public func exceedsTolerance(
+        _ tolerance: Double,
+        using averaging: Sample.Averaging<Element>
+    ) -> Bool {
+        guard let delta = change(using: averaging) else { return false }
+        return Swift::abs(delta) > tolerance
     }
 }
 

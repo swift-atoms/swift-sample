@@ -4,13 +4,15 @@ extension Sample {
 
         @usableFromInline
         let _storage: _SampleBatchStorage<Element>
-
-        @inlinable
-        public var count: Int { _storage.count }
-
-        @inlinable
-        public var isEmpty: Bool { count == 0 }
     }
 }
 
-extension Sample.Batch: Swift.Copyable where Element: Swift.Copyable {}
+extension Sample.Batch where Element: ~Copyable {
+    @inlinable
+    public var count: Int { _storage.count }
+
+    @inlinable
+    public var isEmpty: Bool { count == 0 }
+}
+
+extension Sample.Batch: Swift::Copyable where Element: Swift::Copyable {}

@@ -6,7 +6,7 @@ extension Sample.Batch where Element: Copyable {
     public init(_ values: [Element], sortedBy comparator: Order.Comparator<Element>) {
         let sorted = values.sorted { comparator($0, $1).isLess }
         let count = sorted.count
-        let pointer = UnsafeMutablePointer<Element>.allocate(capacity: Swift.max(count, 1))
+        let pointer = UnsafeMutablePointer<Element>.allocate(capacity: Swift::max(count, 1))
         for i in 0..<count {
             unsafe (pointer + i).initialize(to: sorted[i])
         }
@@ -15,7 +15,7 @@ extension Sample.Batch where Element: Copyable {
 }
 
 extension Sample.Batch
-where Element: Swift.Comparable & SendableMetatype & Copyable {
+where Element: Swift::Comparable & SendableMetatype & Copyable {
 
     @inlinable
     public init(_ values: [Element]) {

@@ -8,7 +8,7 @@ extension Sample.Batch where Element: ~Copyable {
         sortedBy comparator: Order.Comparator<Element>,
         initializingWith body: (Int) -> Element
     ) {
-        let pointer = UnsafeMutablePointer<Element>.allocate(capacity: Swift.max(count, 1))
+        let pointer = UnsafeMutablePointer<Element>.allocate(capacity: Swift::max(count, 1))
         for i in 0..<count {
             unsafe (pointer + i).initialize(to: body(i))
         }
@@ -24,7 +24,7 @@ extension Sample.Batch where Element: ~Copyable {
         guard count > 0 else { return nil }
         let index = Int(Double(count) * p)
 
-        let clamped = Swift.min(index, count - 1)
+        let clamped = Swift::min(index, count - 1)
         return unsafe body((self._storage.base + clamped).pointee)
     }
 

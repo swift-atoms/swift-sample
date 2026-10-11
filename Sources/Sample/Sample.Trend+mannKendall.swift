@@ -1,6 +1,6 @@
 extension Sample.Trend {
 
-    public static func mannKendall<Observations: Swift.Sequence>(
+    public static func mannKendall<Observations: Swift::Sequence>(
         _ observations: Observations,
         value: (Observations.Element) -> Double
     ) -> Self {

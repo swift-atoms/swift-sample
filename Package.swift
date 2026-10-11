@@ -68,7 +68,6 @@ let package = Package(
                 .product(name: "Time", package: "swift-time"),
                 .target(name: "Sample"),
                 .target(name: "Sample Test Support"),
-                .target(name: "Sample Foundation Integration"),
             ],
             path: "Tests/Sample Tests"
         ),
@@ -90,7 +89,7 @@ let package = Package(
     swiftLanguageModes: [.v6]
 )
 
-for target in package.targets where ![.system, .binary, .plugin].contains(target.type) {
+for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
     target.swiftSettings =
         (target.swiftSettings ?? []) + [
             .strictMemorySafety(),
