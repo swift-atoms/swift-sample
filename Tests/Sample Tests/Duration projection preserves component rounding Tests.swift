@@ -27,13 +27,14 @@ import Testing
             }
         }
 
-        var state: UInt64 = 0x91a37bc8456d20ef
+        var state: UInt64 = 0x91a3_7bc8_456d_20ef
         for index in 0..<8192 {
-            state = state &* 6364136223846793005 &+ 1442695040888963407
-            let second = index.isMultiple(of: 2)
+            state = state &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
+            let second =
+                index.isMultiple(of: 2)
                 ? Int64(bitPattern: state)
                 : Int64(state % 2_000_001) - 1_000_000
-            state = state &* 6364136223846793005 &+ 1442695040888963407
+            state = state &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
             let fraction = Int64(state % 2_000_000_000_000_000_000) - 1_000_000_000_000_000_000
             verify(seconds: second, attoseconds: fraction)
         }
@@ -42,7 +43,7 @@ import Testing
     @Test(arguments: [Int128.min, .min + 1, .max - 1, .max])
     func `projection accepts durations beyond the native component extent`(attoseconds: Int128) {
         let projected = Sample.Averaging<Duration>.duration.project(.init(attoseconds: attoseconds))
-        let expected: UInt64 = attoseconds < 0 ? 0xc422725dd1d243ac : 0x4422725dd1d243ac
+        let expected: UInt64 = attoseconds < 0 ? 0xc422_725d_d1d2_43ac : 0x4422_725d_d1d2_43ac
         #expect(projected.bitPattern == expected)
         #expect(projected.isFinite)
     }

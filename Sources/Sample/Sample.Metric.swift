@@ -15,9 +15,8 @@ extension Sample {
 }
 
 #if !hasFeature(Embedded)
-extension Sample.Metric: Swift.Codable {}
+    extension Sample.Metric: Swift.Codable {}
 #endif
-
 
 extension Sample.Metric {
 

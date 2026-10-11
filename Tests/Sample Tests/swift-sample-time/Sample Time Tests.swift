@@ -1,6 +1,6 @@
 import Sample
-import Time
 import Testing
+import Time
 
 @Suite
 struct `Duration sampling retains temporal units` {
@@ -36,7 +36,7 @@ struct `Duration sampling retains temporal units` {
 
     @Test func `duration projection accepts the full native storage range`() {
         let averaging = Sample.Averaging<Duration>.duration
-        #expect(averaging.project(.init(attoseconds: .max)).bitPattern == 0x4422725dd1d243ac)
-        #expect(averaging.project(.init(attoseconds: .min)).bitPattern == 0xc422725dd1d243ac)
+        #expect(averaging.project(.init(attoseconds: .max)).bitPattern == 0x4422_725d_d1d2_43ac)
+        #expect(averaging.project(.init(attoseconds: .min)).bitPattern == 0xc422_725d_d1d2_43ac)
     }
 }

@@ -43,22 +43,21 @@ let package = Package(
                 .product(name: "Witness", package: "swift-witness"),
                 .product(name: "Algebra", package: "swift-algebra"),
                 .product(name: "Order", package: "swift-order"),
-                .product(name: "Order", package: "swift-order"),
             ],
             path: "Sources/Sample"
         ),
-        
+
         .target(
             name: "Sample Foundation Integration",
             dependencies: [
-                .target(name: "Sample"),
+                .target(name: "Sample")
             ],
             path: "Sources/Sample Foundation Integration"
         ),
         .target(
             name: "Sample Test Support",
             dependencies: [
-                .target(name: "Sample"),
+                .target(name: "Sample")
             ],
             path: "Tests/Support"
         ),
@@ -79,13 +78,12 @@ let package = Package(
 
                 .target(name: "Sample"),
                 .product(name: "Order", package: "swift-order"),
-                .product(name: "Order", package: "swift-order"),
             ],
             path: "Tests/Consolidated swift-sample-comparison"
         ),
         .testTarget(
             name: "Consolidated Sample Order Tests",
-            dependencies: [.target(name: "Sample"), .product(name: "Order", package: "swift-order"), .product(name: "Order", package: "swift-order")],
+            dependencies: [.target(name: "Sample"), .product(name: "Order", package: "swift-order")],
             path: "Tests/Consolidated swift-sample-order"
         ),
     ],
@@ -93,14 +91,15 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-        .enableExperimentalFeature("Lifetimes"),
-        .treatAllWarnings(as: .error),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+            .enableExperimentalFeature("Lifetimes"),
+            .treatAllWarnings(as: .error),
+        ]
 }
