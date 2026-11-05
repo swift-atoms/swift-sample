@@ -9,16 +9,18 @@ extension Sample.Regression {
         var sumY: Double = 0
         var sumXY: Double = 0
         var sumXX: Double = 0
+        var allXEqual = true
 
         for i in 0..<x.count {
             sumX += x[i]
             sumY += y[i]
             sumXY += x[i] * y[i]
             sumXX += x[i] * x[i]
+            if x[i] != x[0] { allXEqual = false }
         }
 
         let denominator = n * sumXX - sumX * sumX
-        guard denominator != 0 else {
+        guard denominator != 0, !allXEqual else {
 
             return Fit(
                 slope: 0,
