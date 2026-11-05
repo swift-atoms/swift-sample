@@ -110,6 +110,26 @@ struct `Sample batches expose ordered statistics and borrowed observations` {
     }
 
     @Test
+    func `Borrowed percentiles just outside zero to one have no observation`() {
+        let batch = Sample.Batch(count: 4, sortedBy: .ascending) { i in [1.0, 2.0, 3.0, 4.0][i] }
+        #expect(batch.withPercentile(-0.1) { $0 } == nil)
+        #expect(batch.withPercentile(-Double.leastNonzeroMagnitude) { $0 } == nil)
+        #expect(batch.withPercentile(1.0.nextUp) { $0 } == nil)
+        #expect(batch.withPercentile(1.5) { $0 } == nil)
+        #expect(batch.withPercentile(0.0) { $0 } == 1.0)
+        #expect(batch.withPercentile(1.0) { $0 } == 4.0)
+    }
+
+    @Test
+    func `Borrowed non-finite and far negative percentiles have no observation`() {
+        let batch = Sample.Batch(count: 4, sortedBy: .ascending) { i in [1.0, 2.0, 3.0, 4.0][i] }
+        #expect(batch.withPercentile(-1.0) { $0 } == nil)
+        #expect(batch.withPercentile(.nan) { $0 } == nil)
+        #expect(batch.withPercentile(.infinity) { $0 } == nil)
+        #expect(batch.withPercentile(-.infinity) { $0 } == nil)
+    }
+
+    @Test
     func `Empty batches have no percentile for any input`() {
         let batch = Sample.Batch<Double>([], sortedBy: .ascending)
         #expect(batch.percentile(0.0) == nil)

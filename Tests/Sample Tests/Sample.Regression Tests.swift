@@ -94,6 +94,19 @@ extension `Sample regression fits linear relationships and reports degeneracy`.`
     }
 
     @Test
+    func `equal x values with a rounding residue return degenerate fit`() {
+        for x in [[0.3, 0.3, 0.3], [0.1, 0.1, 0.1, 0.1, 0.1]] {
+            let y = (1...x.count).map(Double.init)
+            let fit = Sample.Regression.linear(x: x, y: y)
+
+            #expect(fit.slope == 0)
+            #expect(fit.intercept == y.reduce(0, +) / Double(y.count))
+            #expect(fit.rSquared == 0)
+            #expect(fit.meanSquaredError == .infinity)
+        }
+    }
+
+    @Test
     func `large values do not overflow`() {
         let x = [1e6, 2e6, 3e6, 4e6, 5e6]
         let y = [2e6, 4e6, 6e6, 8e6, 10e6]
