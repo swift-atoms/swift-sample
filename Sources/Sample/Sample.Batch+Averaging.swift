@@ -4,7 +4,7 @@ extension Sample.Batch where Element: Copyable & Sendable {
     public func sum(using averaging: Sample.Averaging<Element>) -> Element? {
         guard count > 0 else { return nil }
         var result = averaging.zero
-        for i in 0..<count {
+        (0..<count).forEach { i in
             result = averaging.adding(result, unsafe self._storage.base[i])
         }
         return result

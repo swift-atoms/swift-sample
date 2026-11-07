@@ -9,7 +9,7 @@ extension Sample.Batch where Element: Copyable & Sendable {
 
         var deviations: [Double] = []
         deviations.reserveCapacity(count)
-        for i in 0..<count {
+        (0..<count).forEach { i in
             let diff = abs(averaging.project(unsafe self._storage.base[i]) - medianDouble)
             deviations.append(diff)
         }
@@ -39,7 +39,7 @@ extension Sample.Batch where Element: Copyable & Sendable {
         guard madDouble > 0 else { return 0 }
 
         var outliers = 0
-        for i in 0..<self.count {
+        (0..<self.count).forEach { i in
             let deviation = abs(averaging.project(unsafe self._storage.base[i]) - medianDouble)
             if deviation > k * madDouble {
                 outliers += 1

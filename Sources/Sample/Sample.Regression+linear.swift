@@ -11,7 +11,7 @@ extension Sample.Regression {
         var sumXX: Double = 0
         var allXEqual = true
 
-        for i in 0..<x.count {
+        (0..<x.count).forEach { i in
             sumX += x[i]
             sumY += y[i]
             sumXY += x[i] * y[i]
@@ -37,7 +37,7 @@ extension Sample.Regression {
         var ssRes: Double = 0
         var ssTot: Double = 0
 
-        for i in 0..<x.count {
+        (0..<x.count).forEach { i in
             let predicted = slope * x[i] + intercept
             let residual = y[i] - predicted
             ssRes += residual * residual

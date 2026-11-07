@@ -7,7 +7,7 @@ extension Sample.Batch where Element: Copyable {
         let sorted = values.sorted { comparator($0, $1).isLess }
         let count = sorted.count
         let pointer = UnsafeMutablePointer<Element>.allocate(capacity: Swift::max(count, 1))
-        for i in 0..<count {
+        (0..<count).forEach { i in
             unsafe (pointer + i).initialize(to: sorted[i])
         }
         self._storage = unsafe _SampleBatchStorage(base: pointer, count: count)

@@ -9,7 +9,7 @@ extension Sample.Batch where Element: ~Copyable {
         initializingWith body: (Int) -> Element
     ) {
         let pointer = UnsafeMutablePointer<Element>.allocate(capacity: Swift::max(count, 1))
-        for i in 0..<count {
+        (0..<count).forEach { i in
             unsafe (pointer + i).initialize(to: body(i))
         }
         unsafe Self._insertionSort(pointer, count: count, comparator: comparator)

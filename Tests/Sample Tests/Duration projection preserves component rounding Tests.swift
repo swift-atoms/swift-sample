@@ -28,7 +28,7 @@ import Testing
         }
 
         var state: UInt64 = 0x91a3_7bc8_456d_20ef
-        for index in 0..<8192 {
+        (0..<8192).forEach { index in
             state = state &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
             let second =
                 index.isMultiple(of: 2)
