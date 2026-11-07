@@ -1,3 +1,5 @@
+public import Algebra
+
 extension Sample {
 
     @frozen
@@ -50,5 +52,13 @@ extension Sample.Accumulator {
     public var mean: UInt64? {
         guard count > 0 else { return nil }
         return sum / count
+    }
+}
+
+extension Sample.Accumulator {
+
+    @inlinable
+    public static var commutativeMonoid: Algebra.Monoid<Self>.Commutative {
+        Self.monoid
     }
 }
