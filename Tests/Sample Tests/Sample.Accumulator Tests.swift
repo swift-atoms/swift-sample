@@ -1,118 +1,122 @@
 import Sample
 import Testing
 
-@Suite
-struct `Sample accumulators combine observations under monoid laws` {
+enum `Sample.Accumulator Tests` {}
 
-    @Test
-    func `Empty sample accumulators have zero count and sum with no mean`() {
-        let acc = Sample.Accumulator.empty
-        #expect(acc.count == 0)
-        #expect(acc.sum == 0)
-        #expect(acc.minimum == .max)
-        #expect(acc.maximum == 0)
-        #expect(acc.mean == nil)
-    }
+extension `Sample.Accumulator Tests` {
+    @Suite
+    struct `Sample accumulators combine observations under monoid laws` {
 
-    @Test
-    func `Recording samples updates the count sum extrema and mean`() {
-        var acc = Sample.Accumulator.empty
-        acc.record(10)
-        acc.record(20)
-        acc.record(30)
-        #expect(acc.count == 3)
-        #expect(acc.sum == 60)
-        #expect(acc.minimum == 10)
-        #expect(acc.maximum == 30)
-        #expect(acc.mean == 20)
-    }
+        @Test
+        func `Empty sample accumulators have zero count and sum with no mean`() {
+            let acc = Sample.Accumulator.empty
+            #expect(acc.count == 0)
+            #expect(acc.sum == 0)
+            #expect(acc.minimum == .max)
+            #expect(acc.maximum == 0)
+            #expect(acc.mean == nil)
+        }
 
-    @Test
-    func `A single recorded sample defines all accumulator statistics`() {
-        var acc = Sample.Accumulator.empty
-        acc.record(42)
-        #expect(acc.count == 1)
-        #expect(acc.sum == 42)
-        #expect(acc.minimum == 42)
-        #expect(acc.maximum == 42)
-        #expect(acc.mean == 42)
-    }
+        @Test
+        func `Recording samples updates the count sum extrema and mean`() {
+            var acc = Sample.Accumulator.empty
+            acc.record(10)
+            acc.record(20)
+            acc.record(30)
+            #expect(acc.count == 3)
+            #expect(acc.sum == 60)
+            #expect(acc.minimum == 10)
+            #expect(acc.maximum == 30)
+            #expect(acc.mean == 20)
+        }
 
-    @Test
-    func `An empty left accumulator preserves the merged statistics`() {
-        var acc = Sample.Accumulator.empty
-        acc.record(10)
-        acc.record(20)
-        let result = Sample.Accumulator.empty.merged(with: acc)
-        #expect(result.count == acc.count)
-        #expect(result.sum == acc.sum)
-        #expect(result.minimum == acc.minimum)
-        #expect(result.maximum == acc.maximum)
-    }
+        @Test
+        func `A single recorded sample defines all accumulator statistics`() {
+            var acc = Sample.Accumulator.empty
+            acc.record(42)
+            #expect(acc.count == 1)
+            #expect(acc.sum == 42)
+            #expect(acc.minimum == 42)
+            #expect(acc.maximum == 42)
+            #expect(acc.mean == 42)
+        }
 
-    @Test
-    func `An empty right accumulator preserves the merged statistics`() {
-        var acc = Sample.Accumulator.empty
-        acc.record(10)
-        acc.record(20)
-        let result = acc.merged(with: .empty)
-        #expect(result.count == acc.count)
-        #expect(result.sum == acc.sum)
-        #expect(result.minimum == acc.minimum)
-        #expect(result.maximum == acc.maximum)
-    }
+        @Test
+        func `An empty left accumulator preserves the merged statistics`() {
+            var acc = Sample.Accumulator.empty
+            acc.record(10)
+            acc.record(20)
+            let result = Sample.Accumulator.empty.merged(with: acc)
+            #expect(result.count == acc.count)
+            #expect(result.sum == acc.sum)
+            #expect(result.minimum == acc.minimum)
+            #expect(result.maximum == acc.maximum)
+        }
 
-    @Test
-    func `Sample accumulator merging is associative`() {
-        var a = Sample.Accumulator.empty
-        a.record(1)
-        a.record(2)
+        @Test
+        func `An empty right accumulator preserves the merged statistics`() {
+            var acc = Sample.Accumulator.empty
+            acc.record(10)
+            acc.record(20)
+            let result = acc.merged(with: .empty)
+            #expect(result.count == acc.count)
+            #expect(result.sum == acc.sum)
+            #expect(result.minimum == acc.minimum)
+            #expect(result.maximum == acc.maximum)
+        }
 
-        var b = Sample.Accumulator.empty
-        b.record(3)
-        b.record(4)
+        @Test
+        func `Sample accumulator merging is associative`() {
+            var a = Sample.Accumulator.empty
+            a.record(1)
+            a.record(2)
 
-        var c = Sample.Accumulator.empty
-        c.record(5)
-        c.record(6)
+            var b = Sample.Accumulator.empty
+            b.record(3)
+            b.record(4)
 
-        let left = a.merged(with: b).merged(with: c)
-        let right = a.merged(with: b.merged(with: c))
+            var c = Sample.Accumulator.empty
+            c.record(5)
+            c.record(6)
 
-        #expect(left.count == right.count)
-        #expect(left.sum == right.sum)
-        #expect(left.minimum == right.minimum)
-        #expect(left.maximum == right.maximum)
-    }
+            let left = a.merged(with: b).merged(with: c)
+            let right = a.merged(with: b.merged(with: c))
 
-    @Test
-    func `Sample accumulator merging is commutative`() {
-        var a = Sample.Accumulator.empty
-        a.record(10)
-        a.record(50)
+            #expect(left.count == right.count)
+            #expect(left.sum == right.sum)
+            #expect(left.minimum == right.minimum)
+            #expect(left.maximum == right.maximum)
+        }
 
-        var b = Sample.Accumulator.empty
-        b.record(20)
-        b.record(30)
+        @Test
+        func `Sample accumulator merging is commutative`() {
+            var a = Sample.Accumulator.empty
+            a.record(10)
+            a.record(50)
 
-        let ab = a.merged(with: b)
-        let ba = b.merged(with: a)
+            var b = Sample.Accumulator.empty
+            b.record(20)
+            b.record(30)
 
-        #expect(ab.count == ba.count)
-        #expect(ab.sum == ba.sum)
-        #expect(ab.minimum == ba.minimum)
-        #expect(ab.maximum == ba.maximum)
-    }
+            let ab = a.merged(with: b)
+            let ba = b.merged(with: a)
 
-    @Test
-    func `The accumulator monoid witness preserves its identity law`() {
-        let monoid = Sample.Accumulator.monoid
+            #expect(ab.count == ba.count)
+            #expect(ab.sum == ba.sum)
+            #expect(ab.minimum == ba.minimum)
+            #expect(ab.maximum == ba.maximum)
+        }
 
-        var a = Sample.Accumulator.empty
-        a.record(5)
+        @Test
+        func `The accumulator monoid witness preserves its identity law`() {
+            let monoid = Sample.Accumulator.monoid
 
-        let combined = monoid(a, monoid.identity)
-        #expect(combined.count == a.count)
-        #expect(combined.sum == a.sum)
+            var a = Sample.Accumulator.empty
+            a.record(5)
+
+            let combined = monoid(a, monoid.identity)
+            #expect(combined.count == a.count)
+            #expect(combined.sum == a.sum)
+        }
     }
 }

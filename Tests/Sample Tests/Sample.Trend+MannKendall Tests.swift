@@ -1,14 +1,23 @@
 import Sample
 import Testing
 
-@Suite
-struct `Mann Kendall trends quantify ordered evidence with tie correction` {
+enum `Sample.Trend+MannKendall Tests` {}
+
+extension `Sample.Trend+MannKendall Tests` {
+    @Suite
+    struct `Mann Kendall trends quantify ordered evidence with tie correction` {
+    }
+}
+
+extension `Sample.Trend+MannKendall Tests`.`Mann Kendall trends quantify ordered evidence with tie correction` {
     @Suite struct `Mann Kendall evidence distinguishes increasing decreasing and flat observations` {}
+
     @Suite struct `Mann Kendall evidence handles nonfinite and short observation sequences` {}
+
     @Suite struct `Mann Kendall projections support generic ordered samples` {}
 }
 
-extension `Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall evidence distinguishes increasing decreasing and flat observations` {
+extension `Sample.Trend+MannKendall Tests`.`Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall evidence distinguishes increasing decreasing and flat observations` {
     @Test
     func `Increasing observations produce positive Mann Kendall evidence`() {
         let trend = Sample.Trend.mannKendall([1.0, 2.0, 3.0, 4.0, 5.0], value: { $0 })
@@ -50,7 +59,7 @@ extension `Mann Kendall trends quantify ordered evidence with tie correction`.`M
     }
 }
 
-extension `Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall evidence handles nonfinite and short observation sequences` {
+extension `Sample.Trend+MannKendall Tests`.`Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall evidence handles nonfinite and short observation sequences` {
     @Test
     func `non-finite observations are explicitly excluded`() {
         let trend = Sample.Trend.mannKendall(
@@ -75,7 +84,7 @@ extension `Mann Kendall trends quantify ordered evidence with tie correction`.`M
     }
 }
 
-extension `Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall projections support generic ordered samples` {
+extension `Sample.Trend+MannKendall Tests`.`Mann Kendall trends quantify ordered evidence with tie correction`.`Mann Kendall projections support generic ordered samples` {
     @Test
     func `projection supports generic ordered samples`() {
         struct Observation {

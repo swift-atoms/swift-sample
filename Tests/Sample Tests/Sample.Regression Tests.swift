@@ -1,14 +1,21 @@
 import Sample
 import Testing
 
-@Suite
-struct `Sample regression fits linear relationships and reports degeneracy` {
+enum `Sample.Regression Tests` {}
 
+extension `Sample.Regression Tests` {
+    @Suite
+    struct `Sample regression fits linear relationships and reports degeneracy` {
+    }
+}
+
+extension `Sample.Regression Tests`.`Sample regression fits linear relationships and reports degeneracy` {
     @Suite struct `Linear regression recovers slopes intercepts and fit quality` {}
+
     @Suite struct `Linear regression handles sparse degenerate and large observations` {}
 }
 
-extension `Sample regression fits linear relationships and reports degeneracy`.`Linear regression recovers slopes intercepts and fit quality` {
+extension `Sample.Regression Tests`.`Sample regression fits linear relationships and reports degeneracy`.`Linear regression recovers slopes intercepts and fit quality` {
 
     @Test
     func `Linear regression recovers an exact slope intercept and perfect fit`() {
@@ -69,7 +76,7 @@ extension `Sample regression fits linear relationships and reports degeneracy`.`
     }
 }
 
-extension `Sample regression fits linear relationships and reports degeneracy`.`Linear regression handles sparse degenerate and large observations` {
+extension `Sample.Regression Tests`.`Sample regression fits linear relationships and reports degeneracy`.`Linear regression handles sparse degenerate and large observations` {
 
     @Test
     func `Two distinct points determine an exact linear fit`() {
