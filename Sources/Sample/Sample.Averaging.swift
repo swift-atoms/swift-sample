@@ -1,5 +1,5 @@
-@_exported public import Time
-@_exported public import Witness
+public import Time
+public import Witness
 
 extension Sample {
 
