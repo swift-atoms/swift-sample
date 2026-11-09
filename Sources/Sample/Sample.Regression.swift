@@ -5,35 +5,29 @@ extension Sample {
 
 extension Sample.Regression {
 
-    public static func linear(x: [Double], y: [Double]) -> Fit {
-        precondition(x.count == y.count, "x and y must have the same length")
-        precondition(x.count >= 2, "Need at least 2 data points for linear regression")
+    public static func linear(
+        _ points: [(x: Double, y: Double)]
+    ) throws(Sample.Regression.Error) -> Fit {
+        guard points.count >= 2 else { throw .insufficientPoints }
 
-        let n = Double(x.count)
+        let n = Double(points.count)
+        let firstX = points[0].x
         var sumX: Double = 0
         var sumY: Double = 0
         var sumXY: Double = 0
         var sumXX: Double = 0
         var allXEqual = true
 
-        (0..<x.count).forEach { i in
-            sumX += x[i]
-            sumY += y[i]
-            sumXY += x[i] * y[i]
-            sumXX += x[i] * x[i]
-            if x[i] != x[0] { allXEqual = false }
+        for point in points {
+            sumX += point.x
+            sumY += point.y
+            sumXY += point.x * point.y
+            sumXX += point.x * point.x
+            if point.x != firstX { allXEqual = false }
         }
 
         let denominator = n * sumXX - sumX * sumX
-        guard denominator != 0, !allXEqual else {
-
-            return Fit(
-                slope: 0,
-                intercept: sumY / n,
-                rSquared: 0,
-                meanSquaredError: .infinity
-            )
-        }
+        guard denominator != 0, !allXEqual else { throw .constantX }
 
         let slope = (n * sumXY - sumX * sumY) / denominator
         let intercept = (sumY - slope * sumX) / n
@@ -42,17 +36,16 @@ extension Sample.Regression {
         var ssRes: Double = 0
         var ssTot: Double = 0
 
-        (0..<x.count).forEach { i in
-            let predicted = slope * x[i] + intercept
-            let residual = y[i] - predicted
+        for point in points {
+            let residual = point.y - (slope * point.x + intercept)
             ssRes += residual * residual
-            let deviation = y[i] - yMean
+            let deviation = point.y - yMean
             ssTot += deviation * deviation
         }
 
         let rSquared = ssTot > 0 ? 1.0 - ssRes / ssTot : 0.0
 
-        let mse = x.count > 2 ? ssRes / Double(x.count - 2) : ssRes
+        let mse = points.count > 2 ? ssRes / Double(points.count - 2) : ssRes
 
         return Fit(
             slope: slope,
